@@ -14,11 +14,13 @@
 <body th:attr="data-open-modal=${abrirModal}">
     <div class="top-line"></div>
     <div class="app-shell">
-        <aside class="sidebar" id="sidebar"><a class="brand" href="/"><span>P</span><strong>PicPay</strong></a>
+        <aside class="sidebar" id="sidebar">
+            <a class="brand" href="/"><span>P</span><strong>PicPay</strong></a>
             <nav>
-                <a class="active" href="/"><i>▦</i> Visão geral</a><button class="nav-action" type="button"
-                    data-open-modal><i>▣</i> Cadastrar</button><a href="/funcionarios"><i>✚</i> Funcionários</a><a
-                    href="/indicadores"><i>⌁</i> Indicadores</a>
+                <a class="active" href="/"><i>▦</i> Visão geral</a>
+                <a href="/?acao=cadastrar"><i>▣</i> Cadastrar</a>
+                <a href="/funcionarios"><i>✚</i> Funcionários</a>
+                <a href="/indicadores"><i>⌁</i> Indicadores</a>
             </nav>
         </aside>
         <main>
@@ -157,7 +159,7 @@
             </form>
         </section>
     </div>
-    <script th:src="@{/js/app.js(v='20260828-2')}" src="/js/app.js?v=20260828-2"></script>
+    <script th:src="@{/js/app.js(v='20260828-3')}" src="/js/app.js?v=20260828-3"></script>
 </body>
 
 </html>
