@@ -1,6 +1,9 @@
 package com.picpay.api.controller;
 
 import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.math.BigDecimal;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +34,8 @@ public class HomeController {
 	@GetMapping("/")
 	public String dashboard(@RequestParam(defaultValue = "") String busca,
 			@RequestParam(required = false) StatusFuncionario status,
-			@RequestParam(required = false) String resultado, Model model) {
+			@RequestParam(required = false) String resultado,
+			@RequestParam(required = false) String acao, Model model) {
 		List<Funcionario> todos = repository.buscarTodos();
 		String termo = busca.trim().toLowerCase();
 		List<Funcionario> filtrados = todos.stream()
@@ -44,6 +48,7 @@ public class HomeController {
 		model.addAttribute("funcionarioDTO", new FuncionarioDTO());
 		model.addAttribute("busca", busca);
 		model.addAttribute("statusSelecionado", status);
+		model.addAttribute("abrirModal", "cadastrar".equals(acao));
 		if ("cadastrado".equals(resultado)) {
 			model.addAttribute("sucesso", "Funcionário cadastrado com sucesso.");
 		} else if ("removido".equals(resultado)) {
@@ -52,6 +57,36 @@ public class HomeController {
 			model.addAttribute("erro", "Funcionário não encontrado.");
 		}
 		return "index";
+	}
+
+	@GetMapping("/indicadores")
+	public String indicadores(Model model) {
+		List<Funcionario> todos = repository.buscarTodos();
+		prepararModel(model, todos);
+
+		Map<String, Long> porDepartamento = new LinkedHashMap<>();
+		todos.stream()
+				.map(Funcionario::getDepartamento)
+				.filter(departamento -> departamento != null && !departamento.isBlank())
+				.forEach(departamento -> porDepartamento.merge(departamento, 1L, Long::sum));
+
+		BigDecimal somaSalarios = todos.stream()
+				.map(Funcionario::getSalario)
+				.filter(salario -> salario != null)
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
+		long salariosInformados = todos.stream().filter(f -> f.getSalario() != null).count();
+
+		model.addAttribute("reprovados", contar(todos, StatusFuncionario.REPROVADO));
+		model.addAttribute("percentualAnalise", percentual(todos, StatusFuncionario.EM_ANALISE));
+		model.addAttribute("percentualAprovados", percentual(todos, StatusFuncionario.APROVADO));
+		model.addAttribute("percentualReprovados", percentual(todos, StatusFuncionario.REPROVADO));
+		model.addAttribute("percentualContratados", percentual(todos, StatusFuncionario.CONTRATADO));
+		model.addAttribute("taxaContratacao", percentual(todos, StatusFuncionario.CONTRATADO));
+		model.addAttribute("totalDepartamentos", porDepartamento.size());
+		model.addAttribute("departamentos", porDepartamento);
+		model.addAttribute("salarioMedio", salariosInformados == 0 ? BigDecimal.ZERO
+				: somaSalarios.divide(BigDecimal.valueOf(salariosInformados), 2, java.math.RoundingMode.HALF_UP));
+		return "indicadores";
 	}
 
 	@PostMapping("/funcionarios")
@@ -87,6 +122,10 @@ public class HomeController {
 
 	private long contar(List<Funcionario> funcionarios, StatusFuncionario status) {
 		return funcionarios.stream().filter(f -> f.getStatus() == status).count();
+	}
+
+	private long percentual(List<Funcionario> funcionarios, StatusFuncionario status) {
+		return funcionarios.isEmpty() ? 0 : Math.round(contar(funcionarios, status) * 100.0 / funcionarios.size());
 	}
 
 	private boolean contem(String valor, String termo) {
