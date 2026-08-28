@@ -131,8 +131,8 @@ src/
 - [x] Criar a estrutura base do Spring Boot;
 - [x] Configurar Spring MVC e Thymeleaf;
 - [x] Adicionar teste de inicialização do contexto;
-- [ ] Criar o modelo `Funcionario`;
-- [ ] Implementar o armazenamento em `ArrayList`;
+- [x] Criar o modelo `Funcionario`;
+- [x] Implementar o armazenamento em `ArrayList`;
 - [ ] Implementar os endpoints REST;
 - [ ] Adicionar validações e tratamento de erros;
 - [ ] Criar formulário, listagem e edição com Thymeleaf;
