@@ -28,14 +28,14 @@ public class FuncionarioMapper {
 		Objects.requireNonNull(dto, "O DTO do funcionário não pode ser nulo");
 
 		return new Funcionario(
-				dto.id(),
-				dto.nome(),
-				dto.email(),
-				dto.telefone(),
-				dto.cargo(),
-				dto.departamento(),
-				dto.salario(),
-				dto.cidade(),
-				dto.status());
+				dto.getId(),
+				dto.getNome(),
+				dto.getEmail(),
+				dto.getTelefone(),
+				dto.getCargo(),
+				dto.getDepartamento(),
+				dto.getSalario(),
+				dto.getCidade(),
+				dto.getStatus());
 	}
 }

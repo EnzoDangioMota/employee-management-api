@@ -26,15 +26,15 @@ class FuncionarioMapperTests {
 
 		FuncionarioDTO dto = mapper.paraDTO(funcionario);
 
-		assertEquals(funcionario.getId(), dto.id());
-		assertEquals(funcionario.getNome(), dto.nome());
-		assertEquals(funcionario.getEmail(), dto.email());
-		assertEquals(funcionario.getTelefone(), dto.telefone());
-		assertEquals(funcionario.getCargo(), dto.cargo());
-		assertEquals(funcionario.getDepartamento(), dto.departamento());
-		assertEquals(funcionario.getSalario(), dto.salario());
-		assertEquals(funcionario.getCidade(), dto.cidade());
-		assertEquals(funcionario.getStatus(), dto.status());
+		assertEquals(funcionario.getId(), dto.getId());
+		assertEquals(funcionario.getNome(), dto.getNome());
+		assertEquals(funcionario.getEmail(), dto.getEmail());
+		assertEquals(funcionario.getTelefone(), dto.getTelefone());
+		assertEquals(funcionario.getCargo(), dto.getCargo());
+		assertEquals(funcionario.getDepartamento(), dto.getDepartamento());
+		assertEquals(funcionario.getSalario(), dto.getSalario());
+		assertEquals(funcionario.getCidade(), dto.getCidade());
+		assertEquals(funcionario.getStatus(), dto.getStatus());
 	}
 
 	@Test
@@ -44,15 +44,15 @@ class FuncionarioMapperTests {
 
 		Funcionario convertido = mapper.paraModel(dto);
 
-		assertEquals(dto.id(), convertido.getId());
-		assertEquals(dto.nome(), convertido.getNome());
-		assertEquals(dto.email(), convertido.getEmail());
-		assertEquals(dto.telefone(), convertido.getTelefone());
-		assertEquals(dto.cargo(), convertido.getCargo());
-		assertEquals(dto.departamento(), convertido.getDepartamento());
-		assertEquals(dto.salario(), convertido.getSalario());
-		assertEquals(dto.cidade(), convertido.getCidade());
-		assertEquals(dto.status(), convertido.getStatus());
+		assertEquals(dto.getId(), convertido.getId());
+		assertEquals(dto.getNome(), convertido.getNome());
+		assertEquals(dto.getEmail(), convertido.getEmail());
+		assertEquals(dto.getTelefone(), convertido.getTelefone());
+		assertEquals(dto.getCargo(), convertido.getCargo());
+		assertEquals(dto.getDepartamento(), convertido.getDepartamento());
+		assertEquals(dto.getSalario(), convertido.getSalario());
+		assertEquals(dto.getCidade(), convertido.getCidade());
+		assertEquals(dto.getStatus(), convertido.getStatus());
 	}
 
 	@Test
