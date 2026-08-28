@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>PicPay | Gestão de funcionários</title>
+    <title>Moonlight | Gestão de funcionários</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,30 +12,11 @@
 </head>
 
 <body th:attr="data-open-modal=${abrirModal}">
-    <div class="top-line"></div>
     <div class="app-shell">
-        <aside class="sidebar" id="sidebar">
-            <a class="brand" href="/"><span>P</span><strong>PicPay</strong></a>
-            <nav>
-                <a class="active" href="/"><i>▦</i> Visão geral</a>
-                <a href="/?acao=cadastrar"><i>▣</i> Cadastrar</a>
-                <a href="/funcionarios"><i>✚</i> Funcionários</a>
-                <a href="/indicadores"><i>⌁</i> Indicadores</a>
-            </nav>
-        </aside>
+        <aside th:replace="~{fragments/layout :: sidebar('overview')}"></aside>
         <main>
-            <header class="topbar"><button id="menuToggle" class="menu" type="button" aria-label="Abrir menu lateral"
-                    aria-expanded="false">☰</button>
-                <div class="title"><small>RESOURCE — FUNCIONÁRIO</small>
-                    <h1>ms-employee-management</h1>
-                </div>
-                <div class="meta">
-                    <div><b>Owner</b><em>♟ equipe-rh</em></div>
-                    <div><b>Lifecycle</b><em>production</em></div>
-                </div>
-            </header>
-            <nav class="tabs"><a class="active" href="/">VISÃO GERAL</a><a href="/funcionarios">FUNCIONÁRIOS</a><a
-                    href="/indicadores">INDICADORES</a></nav>
+            <header th:replace="~{fragments/layout :: topbar('ms-employee-management')}"></header>
+            <nav th:replace="~{fragments/layout :: tabs('overview')}"></nav>
             <div class="content" id="overview">
                 <div class="notice success" th:if="${sucesso}" th:text="${sucesso}"></div>
                 <div class="notice error" th:if="${erro}" th:text="${erro}"></div>
@@ -54,7 +35,7 @@
                         <article><span>Aprovados</span><strong th:text="${aprovados}">0</strong><small>aptos para
                                 contratação</small></article>
                         <article><span>Contratados</span><strong th:text="${contratados}">0</strong><small>no time
-                                PicPay</small></article>
+                                Moonlight</small></article>
                     </div>
                 </section>
                 <section class="panel list" id="employees">
