@@ -116,23 +116,30 @@ No Linux ou macOS:
 src/
 ├── main/
 │   ├── java/com/picpay/api/
+│   │   ├── model/
+│   │   │   ├── Funcionario.java
+│   │   │   └── StatusFuncionario.java
+│   │   ├── repository/
+│   │   │   └── FuncionarioRepository.java
 │   │   └── ApiApplication.java
 │   └── resources/
 │       └── application.properties
 └── test/
     └── java/com/picpay/api/
+        ├── repository/
+        │   └── FuncionarioRepositoryTests.java
         └── ApiApplicationTests.java
 ```
 
-À medida que o projeto evoluir, a aplicação será organizada em camadas de modelo, serviço e controller, além dos templates e recursos estáticos da interface.
+A aplicação está separada por responsabilidades. As camadas `controller` e `service`, além dos templates em `resources/templates`, serão adicionadas junto das funcionalidades HTTP e da interface.
 
 ## Roadmap
 
 - [x] Criar a estrutura base do Spring Boot;
 - [x] Configurar Spring MVC e Thymeleaf;
 - [x] Adicionar teste de inicialização do contexto;
-- [ ] Criar o modelo `Funcionario`;
-- [ ] Implementar o armazenamento em `ArrayList`;
+- [x] Criar o modelo `Funcionario`;
+- [x] Implementar o armazenamento em `ArrayList`;
 - [ ] Implementar os endpoints REST;
 - [ ] Adicionar validações e tratamento de erros;
 - [ ] Criar formulário, listagem e edição com Thymeleaf;
