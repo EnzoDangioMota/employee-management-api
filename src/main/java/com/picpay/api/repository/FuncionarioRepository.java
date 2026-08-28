@@ -15,11 +15,11 @@ public class FuncionarioRepository {
 	private final List<Funcionario> funcionarios = new ArrayList<>();
 
 	public synchronized Funcionario salvar(Funcionario funcionario) {
-		Objects.requireNonNull(funcionario, "O funcionario nao pode ser nulo");
-		Objects.requireNonNull(funcionario.getId(), "O id do funcionario nao pode ser nulo");
+		Objects.requireNonNull(funcionario, "O funcionário não pode ser nulo");
+		Objects.requireNonNull(funcionario.getId(), "O ID do funcionário não pode ser nulo");
 
 		if (existePorId(funcionario.getId())) {
-			throw new IllegalArgumentException("Ja existe um funcionario com o id informado");
+			throw new IllegalArgumentException("Já existe um funcionário com o ID informado");
 		}
 
 		funcionarios.add(funcionario);

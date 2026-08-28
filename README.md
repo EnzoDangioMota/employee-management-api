@@ -64,6 +64,8 @@ Essa abordagem é adequada para o primeiro ciclo da aplicação e poderá ser su
 - Spring Boot 4.1.1;
 - Spring MVC;
 - Thymeleaf;
+- Bean Validation;
+- Lombok;
 - Maven Wrapper;
 - JUnit e Spring Boot Test;
 - HTML, CSS e JavaScript para a interface.
@@ -116,6 +118,9 @@ No Linux ou macOS:
 src/
 ├── main/
 │   ├── java/com/picpay/api/
+│   │   ├── dto/
+│   │   │   ├── FuncionarioDTO.java
+│   │   │   └── FuncionarioMapper.java
 │   │   ├── model/
 │   │   │   ├── Funcionario.java
 │   │   │   └── StatusFuncionario.java
@@ -126,6 +131,9 @@ src/
 │       └── application.properties
 └── test/
     └── java/com/picpay/api/
+        ├── dto/
+        │   ├── FuncionarioDTOValidationTests.java
+        │   └── FuncionarioMapperTests.java
         ├── repository/
         │   └── FuncionarioRepositoryTests.java
         └── ApiApplicationTests.java
