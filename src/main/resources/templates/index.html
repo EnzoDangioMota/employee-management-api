@@ -1,236 +1,46 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Painel interno PicPay para gerenciamento de candidatos.">
-    <title>PicPay Hiring Hub</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/styles.css}" href="/css/styles.css">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PicPay | Gestão de funcionários</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/styles.css}" href="/css/styles.css">
 </head>
-<body>
-    <div class="app-shell">
-        <aside class="sidebar" id="sidebar">
-            <div class="brand">
-                <span class="brand-mark" aria-hidden="true">P</span>
-                <div>
-                    <strong>PicPay</strong>
-                    <span>Hiring Hub</span>
-                </div>
-            </div>
-
-            <nav class="main-nav" aria-label="Navegação principal">
-                <p class="nav-label">GERENCIAMENTO</p>
-                <a class="nav-item active" href="#visao-geral" aria-current="page">
-                    <span aria-hidden="true">▦</span> Visão geral
-                </a>
-                <a class="nav-item" href="#candidatos">
-                    <span aria-hidden="true">◎</span> Candidatos
-                </a>
-                <button class="nav-item nav-button" type="button" data-open-modal>
-                    <span aria-hidden="true">＋</span> Novo cadastro
-                </button>
-
-                <p class="nav-label">ACOMPANHAMENTO</p>
-                <a class="nav-item" href="#indicadores">
-                    <span aria-hidden="true">↗</span> Indicadores
-                </a>
-                <a class="nav-item" href="#processo">
-                    <span aria-hidden="true">≡</span> Processo seletivo
-                </a>
-            </nav>
-
-            <div class="sidebar-footer">
-                <span class="status-dot" aria-hidden="true"></span>
-                <div>
-                    <strong>Sistema online</strong>
-                    <small>Ambiente de desenvolvimento</small>
-                </div>
-            </div>
-        </aside>
-
-        <main class="main-content">
-            <header class="topbar">
-                <div class="topbar-copy">
-                    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button>
-                    <div>
-                        <p>RECURSOS HUMANOS / CANDIDATOS</p>
-                        <h1>Processo seletivo</h1>
-                    </div>
-                </div>
-                <div class="user-area">
-                    <div class="user-copy">
-                        <span>Responsável</span>
-                        <strong>Equipe de RH</strong>
-                    </div>
-                    <span class="avatar" aria-hidden="true">RH</span>
-                </div>
-            </header>
-
-            <div class="content-area">
-                <section class="hero" id="visao-geral">
-                    <div>
-                        <span class="eyebrow">PAINEL DE CONTRATAÇÃO</span>
-                        <h2>Encontre os próximos talentos do PicPay.</h2>
-                        <p>Cadastre, acompanhe e organize cada etapa do processo seletivo em um só lugar.</p>
-                    </div>
-                    <button class="primary-button" type="button" data-open-modal>
-                        <span aria-hidden="true">＋</span> Cadastrar candidato
-                    </button>
-                </section>
-
-                <section class="metrics-grid" id="indicadores" aria-label="Indicadores do processo seletivo">
-                    <article class="metric-card accent-card">
-                        <div class="metric-icon" aria-hidden="true">◎</div>
-                        <div>
-                            <span>Total de candidatos</span>
-                            <strong th:text="${totalCandidatos}">0</strong>
-                        </div>
-                    </article>
-                    <article class="metric-card">
-                        <div class="metric-icon amber" aria-hidden="true">◷</div>
-                        <div>
-                            <span>Em análise</span>
-                            <strong th:text="${emAnalise}">0</strong>
-                        </div>
-                    </article>
-                    <article class="metric-card">
-                        <div class="metric-icon blue" aria-hidden="true">✓</div>
-                        <div>
-                            <span>Aprovados</span>
-                            <strong th:text="${aprovados}">0</strong>
-                        </div>
-                    </article>
-                    <article class="metric-card">
-                        <div class="metric-icon green" aria-hidden="true">★</div>
-                        <div>
-                            <span>Contratados</span>
-                            <strong th:text="${contratados}">0</strong>
-                        </div>
-                    </article>
-                </section>
-
-                <section class="panel" id="candidatos">
-                    <div class="panel-header">
-                        <div>
-                            <span class="eyebrow">TALENTOS</span>
-                            <h2>Candidatos</h2>
-                            <p>Consulte e acompanhe quem está participando do processo.</p>
-                        </div>
-                        <div class="panel-actions">
-                            <label class="search-field">
-                                <span aria-hidden="true">⌕</span>
-                                <span class="sr-only">Pesquisar candidatos</span>
-                                <input id="candidateSearch" type="search" placeholder="Buscar por nome, cargo ou status">
-                            </label>
-                            <button class="filter-button" type="button" aria-label="Filtrar candidatos">Filtros</button>
-                        </div>
-                    </div>
-
-                    <div class="table-wrapper">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Candidato</th>
-                                    <th>Cargo</th>
-                                    <th>Departamento</th>
-                                    <th>Status</th>
-                                    <th class="align-right">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody id="candidateTableBody">
-                                <tr th:each="funcionario : ${funcionarios}" class="candidate-row">
-                                    <td>
-                                        <div class="candidate-cell">
-                                            <span class="candidate-avatar" th:text="${#strings.substring(funcionario.nome, 0, 1)}">A</span>
-                                            <div>
-                                                <strong th:text="${funcionario.nome}">Nome</strong>
-                                                <small th:text="${funcionario.email}">email@exemplo.com</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td th:text="${funcionario.cargo}">Cargo</td>
-                                    <td th:text="${funcionario.departamento}">Departamento</td>
-                                    <td><span class="status-badge" th:text="${funcionario.status}">EM_ANALISE</span></td>
-                                    <td class="align-right"><button class="icon-button" type="button" aria-label="Abrir ações">•••</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <div class="empty-state" th:if="${#lists.isEmpty(funcionarios)}" id="emptyState">
-                            <span class="empty-icon" aria-hidden="true">◎</span>
-                            <h3>Nenhum candidato cadastrado</h3>
-                            <p>Comece adicionando o primeiro talento ao processo seletivo.</p>
-                            <button class="secondary-button" type="button" data-open-modal>Cadastrar primeiro candidato</button>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </main>
-    </div>
-
-    <div class="modal-backdrop" id="candidateModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
-        <section class="modal-card">
-            <header class="modal-header">
-                <div>
-                    <span class="eyebrow">NOVO TALENTO</span>
-                    <h2 id="modalTitle">Cadastrar candidato</h2>
-                    <p>Preencha os dados iniciais para adicionar uma pessoa ao processo.</p>
-                </div>
-                <button class="close-button" type="button" data-close-modal aria-label="Fechar">×</button>
-            </header>
-
-            <form class="candidate-form" id="candidateForm">
-                <div class="form-grid">
-                    <label>
-                        <span>ID</span>
-                        <input type="number" name="id" min="1" placeholder="Ex.: 101" required>
-                    </label>
-                    <label class="wide-field">
-                        <span>Nome completo</span>
-                        <input type="text" name="nome" placeholder="Digite o nome do candidato" required>
-                    </label>
-                    <label>
-                        <span>E-mail</span>
-                        <input type="email" name="email" placeholder="nome@email.com" required>
-                    </label>
-                    <label>
-                        <span>Telefone</span>
-                        <input type="tel" name="telefone" placeholder="(11) 99999-9999">
-                    </label>
-                    <label>
-                        <span>Cargo</span>
-                        <input type="text" name="cargo" placeholder="Ex.: Desenvolvedor Java" required>
-                    </label>
-                    <label>
-                        <span>Departamento</span>
-                        <input type="text" name="departamento" placeholder="Ex.: Tecnologia">
-                    </label>
-                    <label>
-                        <span>Cidade</span>
-                        <input type="text" name="cidade" placeholder="Ex.: São Paulo">
-                    </label>
-                    <label>
-                        <span>Status inicial</span>
-                        <select name="status">
-                            <option value="EM_ANALISE">Em análise</option>
-                            <option value="APROVADO">Aprovado</option>
-                            <option value="REPROVADO">Reprovado</option>
-                            <option value="CONTRATADO">Contratado</option>
-                        </select>
-                    </label>
-                </div>
-                <p class="form-feedback" id="formFeedback" role="status"></p>
-                <footer class="modal-footer">
-                    <button class="ghost-button" type="button" data-close-modal>Cancelar</button>
-                    <button class="primary-button" type="submit">Salvar candidato</button>
-                </footer>
-            </form>
-        </section>
-    </div>
-
-    <script th:src="@{/js/app.js}" src="/js/app.js"></script>
-</body>
-</html>
+<body><div class="top-line"></div><div class="app-shell">
+<aside class="sidebar" id="sidebar">
+  <a class="brand" href="#"><span>P</span><strong>PicPay</strong></a>
+  <button class="search" type="button">⌕ &nbsp; Search</button>
+  <nav>
+    <a href="#"><i>▦</i> Home</a><a href="#cadastro"><i>▤</i> Funcionários <b>⌃</b></a>
+    <a class="child active" href="#cadastro"><i>▣</i> Cadastrar</a><a class="child" href="#lista"><i>✚</i> Todos</a>
+    <a class="child" href="#lista"><i>●</i> Status</a><a href="#"><i>♟</i> Equipes</a>
+    <a href="#"><i>▰</i> Departamentos</a><a href="#"><i>⬡</i> Cargos</a>
+    <a href="#"><i>⌕</i> Consultar <b>⌄</b></a><a href="#"><i>▣</i> Relatórios</a><a href="#"><i>⌁</i> Métricas</a>
+  </nav>
+</aside>
+<main>
+  <header class="topbar"><button id="menuToggle" class="menu">☰</button><div class="title"><small>RESOURCE — FUNCIONÁRIO</small><h1>gestao-de-funcionarios <span>☆</span></h1></div><div class="meta"><div><b>Owner</b><em>♟ equipe-rh</em></div><div><b>Lifecycle</b><em>production</em></div><button>⋮</button></div></header>
+  <nav class="tabs"><a>OVERVIEW</a><a href="#lista">FUNCIONÁRIOS</a><a class="active" href="#cadastro">CADASTRAR</a></nav>
+  <div class="content">
+    <section class="panel" id="cadastro"><header><h2>Cadastrar funcionário</h2><p>Adicione um novo profissional à estrutura da empresa.</p></header>
+      <form id="employeeForm">
+        <div class="form-card"><h3>Dados pessoais</h3><p>Informações de identificação e contato</p>
+          <label><span>Nome completo *</span><input name="nome" placeholder="Digite o nome" required></label>
+          <label><span>E-mail *</span><input name="email" type="email" placeholder="nome@picpay.com" required></label>
+          <label><span>Telefone</span><input name="telefone" placeholder="(11) 99999-9999"></label>
+        </div><div class="arrow">→</div>
+        <div class="form-card"><h3>Dados profissionais</h3><p>Defina a função e a situação do funcionário</p>
+          <label><span>Cargo *</span><input name="cargo" placeholder="Ex.: Desenvolvedor Java" required></label>
+          <label><span>Departamento *</span><select required><option value="">Selecione o departamento</option><option>Tecnologia</option><option>Produto</option><option>Recursos Humanos</option><option>Financeiro</option></select></label>
+          <label><span>Status inicial *</span><select><option>Ativo</option><option>Inativo</option><option>Férias</option><option>Afastado</option></select></label>
+        </div>
+        <footer><span id="formFeedback"></span><button type="submit">CADASTRAR</button></footer>
+      </form>
+    </section>
+    <section class="panel list" id="lista"><header class="list-head"><div><h2>Funcionários</h2><p>Profissionais cadastrados no sistema.</p></div><label class="list-search">⌕ <input placeholder="Buscar funcionário"></label></header>
+      <div class="table-wrap" th:if="${!#lists.isEmpty(funcionarios)}"><table><thead><tr><th>Funcionário</th><th>Cargo</th><th>Departamento</th><th>Status</th></tr></thead><tbody><tr th:each="f : ${funcionarios}"><td th:text="${f.nome}">Nome</td><td th:text="${f.cargo}">Cargo</td><td th:text="${f.departamento}">Departamento</td><td><span class="badge" th:text="${f.status}">ATIVO</span></td></tr></tbody></table></div>
+      <div class="empty" th:if="${#lists.isEmpty(funcionarios)}"><strong>▣</strong><div><h3>Nenhum funcionário cadastrado</h3><p>Use o formulário acima para criar o primeiro registro.</p></div></div>
+    </section>
+  </div>
+</main></div><script th:src="@{/js/app.js}" src="/js/app.js"></script></body></html>
