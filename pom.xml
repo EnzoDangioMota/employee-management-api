@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.picpay</groupId>
-	<artifactId>api</artifactId>
+	<artifactId>ms-employee-management</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name/>
-	<description/>
+	<name>ms-employee-management</name>
+	<description>Microsserviço para gestão e análise de funcionários</description>
 	<url/>
 	<licenses>
 		<license/>
