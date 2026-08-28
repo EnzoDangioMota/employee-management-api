@@ -14,7 +14,7 @@ function closeModal() {
     document.body.classList.remove('modal-open');
 }
 
-document.querySelectorAll('[data-open-modal]').forEach(trigger => {
+document.querySelectorAll('[data-open-modal-trigger]').forEach(trigger => {
     trigger.addEventListener('click', event => {
         event.preventDefault();
         event.stopPropagation();
