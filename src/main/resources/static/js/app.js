@@ -14,9 +14,23 @@ function closeModal() {
     document.body.classList.remove('modal-open');
 }
 
-document.addEventListener('click', event => {
-    if (event.target.closest('[data-open-modal]')) openModal();
-    if (event.target.closest('[data-close-modal]')) closeModal();
+document.querySelectorAll('[data-open-modal]').forEach(trigger => {
+    trigger.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        openModal();
+    });
+});
+
+document.querySelectorAll('[data-close-modal]').forEach(trigger => {
+    trigger.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        closeModal();
+    });
+});
+
+modal?.addEventListener('click', event => {
     if (event.target === modal) closeModal();
 });
 document.addEventListener('keydown', event => { if (event.key === 'Escape' && modal && !modal.hidden) closeModal(); });
