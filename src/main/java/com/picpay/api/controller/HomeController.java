@@ -32,10 +32,20 @@ public class HomeController {
 	}
 
 	@GetMapping("/")
-	public String dashboard(@RequestParam(defaultValue = "") String busca,
+	public String dashboard(@RequestParam(required = false) String acao, Model model) {
+		List<Funcionario> todos = repository.buscarTodos();
+		prepararModel(model, todos);
+		model.addAttribute("funcionarios", todos);
+		model.addAttribute("funcionarioDTO", new FuncionarioDTO());
+		model.addAttribute("busca", "");
+		model.addAttribute("abrirModal", "cadastrar".equals(acao));
+		return "index";
+	}
+
+	@GetMapping("/funcionarios")
+	public String funcionarios(@RequestParam(defaultValue = "") String busca,
 			@RequestParam(required = false) StatusFuncionario status,
-			@RequestParam(required = false) String resultado,
-			@RequestParam(required = false) String acao, Model model) {
+			@RequestParam(required = false) String resultado, Model model) {
 		List<Funcionario> todos = repository.buscarTodos();
 		String termo = busca.trim().toLowerCase();
 		List<Funcionario> filtrados = todos.stream()
@@ -43,12 +53,11 @@ public class HomeController {
 						|| contem(f.getCargo(), termo) || contem(f.getDepartamento(), termo))
 				.filter(f -> status == null || f.getStatus() == status)
 				.toList();
-		prepararModel(model, todos);
 		model.addAttribute("funcionarios", filtrados);
-		model.addAttribute("funcionarioDTO", new FuncionarioDTO());
+		model.addAttribute("totalEncontrado", filtrados.size());
+		model.addAttribute("statusDisponiveis", StatusFuncionario.values());
 		model.addAttribute("busca", busca);
 		model.addAttribute("statusSelecionado", status);
-		model.addAttribute("abrirModal", "cadastrar".equals(acao));
 		if ("cadastrado".equals(resultado)) {
 			model.addAttribute("sucesso", "Funcionário cadastrado com sucesso.");
 		} else if ("removido".equals(resultado)) {
@@ -56,7 +65,7 @@ public class HomeController {
 		} else if ("nao-encontrado".equals(resultado)) {
 			model.addAttribute("erro", "Funcionário não encontrado.");
 		}
-		return "index";
+		return "funcionarios";
 	}
 
 	@GetMapping("/indicadores")
@@ -94,7 +103,7 @@ public class HomeController {
 		if (!result.hasErrors()) {
 			try {
 				repository.salvar(mapper.paraModel(funcionarioDTO));
-				return "redirect:/?resultado=cadastrado";
+				return "redirect:/funcionarios?resultado=cadastrado";
 			} catch (IllegalArgumentException exception) {
 				result.rejectValue("id", "id.duplicado", exception.getMessage());
 			}
@@ -109,7 +118,8 @@ public class HomeController {
 	@PostMapping("/funcionarios/remover")
 	public String remover(@RequestParam Long id) {
 		boolean removido = repository.removerPorId(id);
-		return removido ? "redirect:/?resultado=removido" : "redirect:/?resultado=nao-encontrado";
+		return removido ? "redirect:/funcionarios?resultado=removido"
+				: "redirect:/funcionarios?resultado=nao-encontrado";
 	}
 
 	private void prepararModel(Model model, List<Funcionario> todos) {
