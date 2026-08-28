@@ -1,4 +1,4 @@
-package com.picpay.api.funcionario;
+package com.picpay.api.model;
 
 import java.math.BigDecimal;
 

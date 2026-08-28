@@ -1,4 +1,4 @@
-package com.picpay.api.funcionario;
+package com.picpay.api.repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
+
+import com.picpay.api.model.Funcionario;
 
 @Repository
 public class FuncionarioRepository {

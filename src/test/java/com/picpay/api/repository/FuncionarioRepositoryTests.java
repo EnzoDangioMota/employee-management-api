@@ -1,4 +1,4 @@
-package com.picpay.api.funcionario;
+package com.picpay.api.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -10,6 +10,9 @@ import java.math.BigDecimal;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import com.picpay.api.model.Funcionario;
+import com.picpay.api.model.StatusFuncionario;
 
 class FuncionarioRepositoryTests {
 
