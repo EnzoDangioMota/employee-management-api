@@ -116,6 +116,9 @@ No Linux ou macOS:
 src/
 ├── main/
 │   ├── java/com/picpay/api/
+│   │   ├── dto/
+│   │   │   ├── FuncionarioDTO.java
+│   │   │   └── FuncionarioMapper.java
 │   │   ├── model/
 │   │   │   ├── Funcionario.java
 │   │   │   └── StatusFuncionario.java
@@ -126,6 +129,8 @@ src/
 │       └── application.properties
 └── test/
     └── java/com/picpay/api/
+        ├── dto/
+        │   └── FuncionarioMapperTests.java
         ├── repository/
         │   └── FuncionarioRepositoryTests.java
         └── ApiApplicationTests.java
