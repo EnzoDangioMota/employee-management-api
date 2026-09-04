@@ -33,9 +33,15 @@
                     <header><p>PATCH · ATUALIZAÇÃO PARCIAL</p><h2>Alterar somente o necessário</h2><p>Preencha apenas os campos que deseja modificar.</p></header>
                     <form class="patch-form" method="post" th:action="@{/painel/funcionarios/{id}(id=${funcionarioDTO.id})}">
                         <input type="hidden" name="_method" value="PATCH">
-                        <label>Novo cargo<input name="cargo" placeholder="Manter cargo atual"></label>
-                        <label>Novo salário<input name="salario" type="number" min="0" step="0.01" placeholder="Manter salário atual"></label>
-                        <label>Novo status<select name="status"><option value="">Manter status atual</option><option th:each="item : ${statusDisponiveis}" th:value="${item}" th:text="${#strings.replace(item, '_', ' ')}"></option></select></label>
+                        <label>Campo que deseja alterar<select id="patchField" name="campo" required><option value="">Selecione um campo</option><option value="nome">Nome</option><option value="email">E-mail</option><option value="telefone">Telefone</option><option value="cargo">Cargo</option><option value="departamento">Departamento</option><option value="salario">Salário</option><option value="cidade">Cidade</option><option value="status">Status</option></select></label>
+                        <label data-patch-option="nome" hidden>Novo nome<input name="nome" placeholder="Informe o novo nome" disabled></label>
+                        <label data-patch-option="email" hidden>Novo e-mail<input name="email" type="email" placeholder="Informe o novo e-mail" disabled></label>
+                        <label data-patch-option="telefone" hidden>Novo telefone<input name="telefone" placeholder="Informe o novo telefone" disabled></label>
+                        <label data-patch-option="cargo" hidden>Novo cargo<input name="cargo" placeholder="Informe o novo cargo" disabled></label>
+                        <label data-patch-option="departamento" hidden>Novo departamento<input name="departamento" placeholder="Informe o novo departamento" disabled></label>
+                        <label data-patch-option="salario" hidden>Novo salário<input name="salario" type="number" min="0" step="0.01" placeholder="Informe o novo salário" disabled></label>
+                        <label data-patch-option="cidade" hidden>Nova cidade<input name="cidade" placeholder="Informe a nova cidade" disabled></label>
+                        <label data-patch-option="status" hidden>Novo status<select name="status" disabled><option value="">Selecione o novo status</option><option th:each="item : ${statusDisponiveis}" th:value="${item}" th:text="${#strings.replace(item, '_', ' ')}"></option></select></label>
                         <div class="form-actions"><a href="/painel/funcionarios">VOLTAR</a><button class="secondary" type="submit">ATUALIZAR COM PATCH</button></div>
                     </form>
                 </section>

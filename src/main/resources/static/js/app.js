@@ -41,3 +41,16 @@ document.querySelector('#menuToggle')?.addEventListener('click', event => {
 document.querySelectorAll('.sidebar a').forEach(link => link.addEventListener('click', () => sidebar.classList.remove('open')));
 
 if (document.body.dataset.openModal === 'true') openModal();
+
+const patchField = document.querySelector('#patchField');
+patchField?.addEventListener('change', () => {
+    document.querySelectorAll('[data-patch-option]').forEach(option => {
+        const selected = option.dataset.patchOption === patchField.value;
+        option.hidden = !selected;
+        option.querySelectorAll('input, select').forEach(field => {
+            field.disabled = !selected;
+            field.required = selected;
+            if (!selected) field.value = '';
+        });
+    });
+});
