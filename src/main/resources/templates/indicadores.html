@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ms-employee-management | Indicadores</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="app-shell">
+        <aside th:replace="~{fragments/layout :: sidebar('indicators')}"></aside>
+        <main>
+            <header th:replace="~{fragments/layout :: topbar('ms-employee-management')}"></header>
+            <nav th:replace="~{fragments/layout :: tabs('indicators')}"></nav>
+
+            <div class="content indicators-page">
+                <section class="panel indicators-hero">
+                    <header>
+                        <div>
+                            <h2>Indicadores de pessoas</h2>
+                            <p>Dados consolidados dos funcionários cadastrados durante a execução.</p>
+                        </div>
+                    </header>
+                    <div class="metrics">
+                        <article><span>Total</span><strong
+                                th:text="${totalCandidatos}">0</strong><small>funcionários</small></article>
+                        <article><span>Taxa de contratação</span><strong><span
+                                    th:text="${taxaContratacao}">0</span>%</strong><small>do total cadastrado</small>
+                        </article>
+                        <article><span>Departamentos</span><strong
+                                th:text="${totalDepartamentos}">0</strong><small>áreas representadas</small></article>
+                        <article><span>Salário médio</span><strong class="money"
+                                th:text="|R$ ${#numbers.formatDecimal(salarioMedio, 1, 'POINT', 2, 'COMMA')}|">R$
+                                0,00</strong><small>entre salários informados</small></article>
+                    </div>
+                </section>
+
+                <div class="dashboard-grid">
+                    <section class="panel chart-panel">
+                        <header>
+                            <h2>Distribuição por status</h2>
+                            <p>Percentual de funcionários em cada etapa.</p>
+                        </header>
+                        <div class="status-dashboard">
+                            <div class="donut"
+                                th:style="|--analysis:${percentualAnalise};--approved:${percentualAprovados};--rejected:${percentualReprovados}|">
+                                <div><strong th:text="${totalCandidatos}">0</strong><span>Total</span></div>
+                            </div>
+                            <div class="legend">
+                                <div><i class="analysis"></i><span>Em análise</span><b
+                                        th:text="|${emAnalise} (${percentualAnalise}%)|">0</b></div>
+                                <div><i class="approved"></i><span>Aprovados</span><b
+                                        th:text="|${aprovados} (${percentualAprovados}%)|">0</b></div>
+                                <div><i class="rejected"></i><span>Reprovados</span><b
+                                        th:text="|${reprovados} (${percentualReprovados}%)|">0</b></div>
+                                <div><i class="hired"></i><span>Contratados</span><b
+                                        th:text="|${contratados} (${percentualContratados}%)|">0</b></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="panel chart-panel">
+                        <header>
+                            <h2>Funcionários por departamento</h2>
+                            <p>Participação de cada área no quadro atual.</p>
+                        </header>
+                        <div class="bar-chart" th:if="${!departamentos.isEmpty()}">
+                            <div class="bar-row" th:each="entry : ${departamentos}">
+                                <div><span th:text="${entry.key}">Tecnologia</span><b th:text="${entry.value}">0</b>
+                                </div>
+                                <div class="bar-track"><span
+                                        th:style="|--value:${totalCandidatos == 0 ? 0 : entry.value * 100 / totalCandidatos}|"
+                                        class="bar-fill"></span></div>
+                            </div>
+                        </div>
+                        <div class="chart-empty" th:if="${departamentos.isEmpty()}"><strong>▰</strong>
+                            <p>Cadastre funcionários com departamento para visualizar este gráfico.</p><a
+                                href="/?acao=cadastrar">CADASTRAR FUNCIONÁRIO</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script th:src="@{/js/app.js(v='20260828-4')}" src="/js/app.js?v=20260828-4"></script>
+</body>
+
+</html>

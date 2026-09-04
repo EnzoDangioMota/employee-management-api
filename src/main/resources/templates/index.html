@@ -1,23 +1,146 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PicPay Hiring Hub</title>
-  <link rel="stylesheet" href="/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Moonlight | Gestão de funcionários</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" href="/css/styles.css">
 </head>
-<body>
-  <header class="topbar"><a href="/" class="brand">picpay <span>Hiring Hub</span></a><p>Gestão de candidatos</p></header>
-  <main class="container">
-    <section class="hero"><div><p class="eyebrow">RECURSOS HUMANOS</p><h1>Contratações com clareza.</h1><p>Cadastre, acompanhe e atualize cada etapa do processo seletivo.</p></div><button class="primary" id="newButton">+ Novo candidato</button></section>
-    <section class="metrics" aria-label="Indicadores"><article><span>Total</span><strong id="total">0</strong></article><article><span>Em análise</span><strong id="emAnalise">0</strong></article><article><span>Aprovados</span><strong id="aprovados">0</strong></article><article><span>Contratados</span><strong id="contratados">0</strong></article></section>
-    <section class="panel controls"><div class="search"><input id="search" placeholder="Pesquisar por nome, cargo ou status"><button id="searchId">Consultar ID</button><input id="idLookup" type="number" min="1" placeholder="ID"></div><select id="statusFilter"><option value="">Todos os status</option><option>EM_ANALISE</option><option>APROVADO</option><option>REPROVADO</option><option>CONTRATADO</option></select></section>
-    <p id="feedback" class="feedback" role="status"></p>
-    <section class="panel"><div class="section-head"><div><h2>Candidatos</h2><p id="resultCount">Carregando dados...</p></div></div><div class="table-wrap"><table><thead><tr><th>ID</th><th>Candidato</th><th>Cargo</th><th>Departamento</th><th>Cidade</th><th>Status</th><th>Ações</th></tr></thead><tbody id="employees"></tbody></table></div><p id="empty" class="empty" hidden>Nenhum candidato encontrado.</p></section>
-    <section class="forms">
-      <form id="employeeForm" class="panel form"><div class="section-head"><div><p class="eyebrow" id="formMode">POST · NOVO CADASTRO</p><h2 id="formTitle">Cadastrar candidato</h2></div><button type="button" class="link-button" id="cancelEdit" hidden>Cancelar edição</button></div><div class="form-grid"><label>ID *<input name="id" type="number" min="1" required></label><label>Nome *<input name="nome" required></label><label>E-mail *<input name="email" type="email" required></label><label>Telefone<input name="telefone"></label><label>Cargo *<input name="cargo" required></label><label>Departamento<input name="departamento"></label><label>Salário<input name="salario" type="number" min="0" step="0.01"></label><label>Cidade<input name="cidade"></label><label>Status<select name="status"><option value="">Não informado</option><option>EM_ANALISE</option><option>APROVADO</option><option>REPROVADO</option><option>CONTRATADO</option></select></label></div><button class="primary" type="submit" id="saveButton">Cadastrar (POST)</button></form>
-      <form id="patchForm" class="panel form patch"><div class="section-head"><div><p class="eyebrow">PATCH · ATUALIZAÇÃO PARCIAL</p><h2>Atualizar somente o necessário</h2><p>Preencha um ou mais campos; os demais dados serão mantidos.</p></div></div><div class="form-grid"><label>ID do candidato *<input name="id" type="number" min="1" required></label><label>Novo cargo<input name="cargo"></label><label>Novo salário<input name="salario" type="number" min="0" step="0.01"></label><label>Novo status<select name="status"><option value="">Não alterar</option><option>EM_ANALISE</option><option>APROVADO</option><option>REPROVADO</option><option>CONTRATADO</option></select></label></div><button class="secondary" type="submit">Atualizar parcialmente (PATCH)</button></form>
-    </section>
-  </main><script src="/js/app.js"></script>
+
+<body th:attr="data-open-modal=${abrirModal}">
+    <div class="app-shell">
+        <aside th:replace="~{fragments/layout :: sidebar('overview')}"></aside>
+        <main>
+            <header th:replace="~{fragments/layout :: topbar('ms-employee-management')}"></header>
+            <nav th:replace="~{fragments/layout :: tabs('overview')}"></nav>
+            <div class="content" id="overview">
+                <div class="notice success" th:if="${sucesso}" th:text="${sucesso}"></div>
+                <div class="notice error" th:if="${erro}" th:text="${erro}"></div>
+                <section class="panel overview-panel">
+                    <header>
+                        <div>
+                            <h2>Visão geral</h2>
+                            <p>Acompanhe e gerencie os profissionais da empresa.</p>
+                        </div><button class="primary" type="button" data-open-modal-trigger>+ NOVO FUNCIONÁRIO</button>
+                    </header>
+                    <div class="metrics" id="metrics">
+                        <article><span>Total</span><strong
+                                th:text="${totalCandidatos}">0</strong><small>funcionários</small></article>
+                        <article><span>Em análise</span><strong th:text="${emAnalise}">0</strong><small>aguardando
+                                avaliação</small></article>
+                        <article><span>Aprovados</span><strong th:text="${aprovados}">0</strong><small>aptos para
+                                contratação</small></article>
+                        <article><span>Contratados</span><strong th:text="${contratados}">0</strong><small>no time
+                                Moonlight</small></article>
+                    </div>
+                </section>
+                <section class="panel list" id="employees">
+                    <header class="list-head">
+                        <div>
+                            <h2>Funcionários</h2>
+                            <p>Consulte os profissionais cadastrados no sistema.</p>
+                        </div>
+                        <form class="filters" method="get" action="/"><label class="list-search">⌕ <input name="busca"
+                                    th:value="${busca}" placeholder="Buscar funcionário"></label><select name="status">
+                                <option value="">Todos os status</option>
+                                <option th:each="item : ${statusDisponiveis}" th:value="${item}"
+                                    th:text="${#strings.replace(item, '_', ' ')}"
+                                    th:selected="${item == statusSelecionado}"></option>
+                            </select><button type="submit">FILTRAR</button><a href="/">LIMPAR</a></form>
+                    </header>
+                    <div class="table-wrap" th:if="${!#lists.isEmpty(funcionarios)}">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Funcionário</th>
+                                    <th>Cargo</th>
+                                    <th>Departamento</th>
+                                    <th>Cidade</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="f : ${funcionarios}">
+                                    <td>
+                                        <div class="person"><span th:text="${#strings.substring(f.nome,0,1)}">F</span>
+                                            <div><b th:text="${f.nome}">Nome</b><small
+                                                    th:text="${f.email}">email</small></div>
+                                        </div>
+                                    </td>
+                                    <td th:text="${f.cargo}">Cargo</td>
+                                    <td th:text="${f.departamento ?: '—'}">Departamento</td>
+                                    <td th:text="${f.cidade ?: '—'}">Cidade</td>
+                                    <td><span class="badge"
+                                            th:text="${#strings.replace(f.status, '_', ' ')}">STATUS</span></td>
+                                    <td>
+                                        <form class="delete-form" method="post" action="/funcionarios/remover"><input
+                                                type="hidden" name="id" th:value="${f.id}"><button type="submit"
+                                                aria-label="Remover funcionário"
+                                                onclick="return confirm('Deseja remover este funcionário?')">×</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="empty" th:if="${#lists.isEmpty(funcionarios)}"><strong>▣</strong>
+                        <div>
+                            <h3>Nenhum funcionário encontrado</h3>
+                            <p>Cadastre um funcionário ou altere os filtros da consulta.</p>
+                        </div><button type="button" data-open-modal-trigger>CADASTRAR</button>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal" id="employeeModal" hidden>
+        <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <header>
+                <div><small>NOVO REGISTRO</small>
+                    <h2 id="modalTitle">Cadastrar funcionário</h2>
+                    <p>Preencha os dados para adicionar um profissional.</p>
+                </div><button type="button" data-close-modal>×</button>
+            </header>
+            <form class="employee-form" method="post" th:action="@{/painel/funcionarios}" th:object="${funcionarioDTO}">
+                <div class="form-card">
+                    <h3>Dados pessoais</h3>
+                    <p>Informações de identificação e contato</p>
+                    <label><span>ID *</span><input type="number" min="1" th:field="*{id}" required><small
+                            class="field-error" th:errors="*{id}"></small></label><label><span>Nome completo
+                            *</span><input th:field="*{nome}" required><small class="field-error"
+                            th:errors="*{nome}"></small></label><label><span>E-mail *</span><input type="email"
+                            th:field="*{email}" required><small class="field-error"
+                            th:errors="*{email}"></small></label><label><span>Telefone</span><input
+                            th:field="*{telefone}" placeholder="(11) 99999-9999"></label>
+                </div>
+                <div class="arrow">→</div>
+                <div class="form-card">
+                    <h3>Dados profissionais</h3>
+                    <p>Função, localização e situação</p><label><span>Cargo *</span><input th:field="*{cargo}"
+                            required><small class="field-error"
+                            th:errors="*{cargo}"></small></label><label><span>Departamento</span><input
+                            th:field="*{departamento}"></label><label><span>Salário</span><input type="number" min="0"
+                            step="0.01" th:field="*{salario}"><small class="field-error"
+                            th:errors="*{salario}"></small></label><label><span>Cidade</span><input
+                            th:field="*{cidade}"></label><label><span>Status *</span><select th:field="*{status}"
+                            required>
+                            <option value="">Selecione</option>
+                            <option th:each="item : ${statusDisponiveis}" th:value="${item}"
+                                th:text="${#strings.replace(item, '_', ' ')}"></option>
+                        </select></label>
+                </div>
+                <footer><button class="cancel" type="button" data-close-modal>CANCELAR</button><button class="primary"
+                        type="submit">CADASTRAR</button></footer>
+            </form>
+        </section>
+    </div>
+    <script th:src="@{/js/app.js(v='20260828-4')}" src="/js/app.js?v=20260828-4"></script>
 </body>
+
 </html>
