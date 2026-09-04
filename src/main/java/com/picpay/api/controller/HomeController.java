@@ -37,12 +37,15 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String dashboard(@RequestParam(required = false) String acao, Model model) {
-        List<Funcionario> funcionarios = repository.buscarTodos();
-        prepareModel(model, funcionarios);
-        model.addAttribute("funcionarios", funcionarios);
+    public String dashboard(@RequestParam(required = false) String acao,
+            @RequestParam(defaultValue = "") String busca,
+            @RequestParam(required = false) StatusFuncionario status, Model model) {
+        List<Funcionario> todos = repository.buscarTodos();
+        prepareModel(model, todos);
+        model.addAttribute("funcionarios", filter(todos, busca, status));
         model.addAttribute("funcionarioDTO", new FuncionarioDTO());
-        model.addAttribute("busca", "");
+        model.addAttribute("busca", busca);
+        model.addAttribute("statusSelecionado", status);
         model.addAttribute("abrirModal", "cadastrar".equals(acao));
         return "index";
     }
@@ -50,12 +53,7 @@ public class HomeController {
     @GetMapping("/painel/funcionarios")
     public String funcionarios(@RequestParam(defaultValue = "") String busca,
             @RequestParam(required = false) StatusFuncionario status, Model model) {
-        String termo = busca.trim().toLowerCase();
-        List<Funcionario> filtrados = repository.buscarTodos().stream()
-                .filter(f -> termo.isBlank() || contains(f.getNome(), termo) || contains(f.getEmail(), termo)
-                        || contains(f.getCargo(), termo) || contains(f.getDepartamento(), termo))
-                .filter(f -> status == null || f.getStatus() == status)
-                .toList();
+        List<Funcionario> filtrados = filter(repository.buscarTodos(), busca, status);
         model.addAttribute("funcionarios", filtrados);
         model.addAttribute("totalEncontrado", filtrados.size());
         model.addAttribute("statusDisponiveis", StatusFuncionario.values());
@@ -109,6 +107,12 @@ public class HomeController {
         return "redirect:/painel/funcionarios";
     }
 
+    @PostMapping("/painel/visao-geral/funcionarios/remover")
+    public String removerDaVisaoGeral(@RequestParam Long id) {
+        service.delete(id);
+        return "redirect:/";
+    }
+
     @GetMapping("/painel/funcionarios/{id}/editar")
     public String telaEdicao(@PathVariable Long id, Model model) {
         model.addAttribute("funcionarioDTO", service.findById(id));
@@ -146,5 +150,15 @@ public class HomeController {
 
     private boolean contains(String value, String term) {
         return value != null && value.toLowerCase().contains(term);
+    }
+
+    private List<Funcionario> filter(List<Funcionario> funcionarios, String busca, StatusFuncionario status) {
+        String termo = busca.trim().toLowerCase();
+        return funcionarios.stream()
+                .filter(f -> termo.isBlank() || contains(f.getNome(), termo) || contains(f.getEmail(), termo)
+                        || contains(f.getCargo(), termo) || contains(f.getDepartamento(), termo)
+                        || contains(f.getStatus() == null ? null : f.getStatus().name(), termo))
+                .filter(f -> status == null || f.getStatus() == status)
+                .toList();
     }
 }

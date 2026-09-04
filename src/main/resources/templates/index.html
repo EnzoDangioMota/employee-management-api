@@ -78,7 +78,7 @@
                                     <td><span class="badge"
                                             th:text="${#strings.replace(f.status, '_', ' ')}">STATUS</span></td>
                                     <td>
-                                        <form class="delete-form" method="post" action="/funcionarios/remover"><input
+                                        <form class="delete-form" method="post" action="/painel/visao-geral/funcionarios/remover"><input
                                                 type="hidden" name="id" th:value="${f.id}"><button type="submit"
                                                 aria-label="Remover funcionário"
                                                 onclick="return confirm('Deseja remover este funcionário?')">×</button>
