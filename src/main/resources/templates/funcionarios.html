@@ -66,6 +66,7 @@
                                     <td><span class="badge"
                                             th:text="${#strings.replace(f.status, '_', ' ')}">STATUS</span></td>
                                     <td>
+                                        <a class="edit-link" th:href="@{/painel/funcionarios/{id}/editar(id=${f.id})}">Editar</a>
                                         <form class="delete-form" method="post" action="/painel/funcionarios/remover"><input
                                                 type="hidden" name="id" th:value="${f.id}"><button type="submit"
                                                 aria-label="Remover funcionário"

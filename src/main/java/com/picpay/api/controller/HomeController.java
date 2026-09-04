@@ -11,7 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.picpay.api.dto.FuncionarioDTO;
@@ -104,6 +107,25 @@ public class HomeController {
     public String remover(@RequestParam Long id) {
         service.delete(id);
         return "redirect:/painel/funcionarios";
+    }
+
+    @GetMapping("/painel/funcionarios/{id}/editar")
+    public String telaEdicao(@PathVariable Long id, Model model) {
+        model.addAttribute("funcionarioDTO", service.findById(id));
+        model.addAttribute("statusDisponiveis", StatusFuncionario.values());
+        return "editar-funcionario";
+    }
+
+    @PutMapping("/painel/funcionarios/{id}")
+    public String atualizar(@PathVariable Long id, @Valid @ModelAttribute FuncionarioDTO funcionarioDTO) {
+        service.update(id, funcionarioDTO);
+        return "redirect:/painel/funcionarios";
+    }
+
+    @PatchMapping("/painel/funcionarios/{id}")
+    public String atualizarParcialmente(@PathVariable Long id, @ModelAttribute FuncionarioDTO funcionarioDTO) {
+        service.partialUpdate(id, funcionarioDTO);
+        return "redirect:/painel/funcionarios/" + id + "/editar";
     }
 
     private void prepareModel(Model model, List<Funcionario> funcionarios) {

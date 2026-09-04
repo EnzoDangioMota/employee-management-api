@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Gestão de Funcionários | Editar</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" href="/css/styles.css">
+</head>
+<body>
+    <div class="app-shell">
+        <aside th:replace="~{fragments/layout :: sidebar('employees')}"></aside>
+        <main>
+            <header th:replace="~{fragments/layout :: topbar('ms-employee-management')}"></header>
+            <nav th:replace="~{fragments/layout :: tabs('employees')}"></nav>
+            <div class="content edit-page">
+                <section class="panel">
+                    <header><p>PUT · ATUALIZAÇÃO COMPLETA</p><h2>Editar funcionário</h2><p>Atualize todos os dados do cadastro #<span th:text="${funcionarioDTO.id}">0</span>.</p></header>
+                    <form method="post" th:action="@{/painel/funcionarios/{id}(id=${funcionarioDTO.id})}" th:object="${funcionarioDTO}">
+                        <input type="hidden" name="_method" value="PUT">
+                        <label>ID<input type="number" th:field="*{id}" readonly></label>
+                        <label>Nome *<input th:field="*{nome}" required></label>
+                        <label>E-mail *<input type="email" th:field="*{email}" required></label>
+                        <label>Telefone<input th:field="*{telefone}"></label>
+                        <label>Cargo *<input th:field="*{cargo}" required></label>
+                        <label>Departamento<input th:field="*{departamento}"></label>
+                        <label>Salário<input type="number" min="0" step="0.01" th:field="*{salario}"></label>
+                        <label>Cidade<input th:field="*{cidade}"></label>
+                        <label>Status<select th:field="*{status}"><option value="">Não informado</option><option th:each="item : ${statusDisponiveis}" th:value="${item}" th:text="${#strings.replace(item, '_', ' ')}"></option></select></label>
+                        <div class="form-actions"><a href="/painel/funcionarios">CANCELAR</a><button class="primary" type="submit">SALVAR COM PUT</button></div>
+                    </form>
+                </section>
+                <section class="panel">
+                    <header><p>PATCH · ATUALIZAÇÃO PARCIAL</p><h2>Alterar somente o necessário</h2><p>Preencha apenas os campos que deseja modificar.</p></header>
+                    <form class="patch-form" method="post" th:action="@{/painel/funcionarios/{id}(id=${funcionarioDTO.id})}">
+                        <input type="hidden" name="_method" value="PATCH">
+                        <label>Novo cargo<input name="cargo" placeholder="Manter cargo atual"></label>
+                        <label>Novo salário<input name="salario" type="number" min="0" step="0.01" placeholder="Manter salário atual"></label>
+                        <label>Novo status<select name="status"><option value="">Manter status atual</option><option th:each="item : ${statusDisponiveis}" th:value="${item}" th:text="${#strings.replace(item, '_', ' ')}"></option></select></label>
+                        <div class="form-actions"><a href="/painel/funcionarios">VOLTAR</a><button class="secondary" type="submit">ATUALIZAR COM PATCH</button></div>
+                    </form>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script th:src="@{/js/app.js}" src="/js/app.js"></script>
+</body>
+</html>
