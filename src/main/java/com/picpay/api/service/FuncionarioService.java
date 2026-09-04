@@ -65,22 +65,27 @@ public class FuncionarioService {
                         new ResourceNotFoundException("Funcionário não encontrado: " + id));
 
         if (dto.getNome() != null) {
+            validateNotBlank(dto.getNome(), "nome");
             funcionario.setNome(dto.getNome());
         }
 
         if (dto.getEmail() != null) {
+            validateNotBlank(dto.getEmail(), "e-mail");
             funcionario.setEmail(dto.getEmail());
         }
 
         if (dto.getTelefone() != null) {
+            validateNotBlank(dto.getTelefone(), "telefone");
             funcionario.setTelefone(dto.getTelefone());
         }
 
         if (dto.getCargo() != null) {
+            validateNotBlank(dto.getCargo(), "cargo");
             funcionario.setCargo(dto.getCargo());
         }
 
         if (dto.getDepartamento() != null) {
+            validateNotBlank(dto.getDepartamento(), "departamento");
             funcionario.setDepartamento(dto.getDepartamento());
         }
 
@@ -89,6 +94,7 @@ public class FuncionarioService {
         }
 
         if (dto.getCidade() != null) {
+            validateNotBlank(dto.getCidade(), "cidade");
             funcionario.setCidade(dto.getCidade());
         }
 
@@ -123,6 +129,12 @@ public class FuncionarioService {
                 funcionario.getCidade(),
                 funcionario.getStatus()
         );
+    }
+
+    private void validateNotBlank(String value, String field) {
+        if (value.isBlank()) {
+            throw new IllegalArgumentException("O campo " + field + " não pode ficar vazio");
+        }
     }
 
     private Funcionario toEntity(FuncionarioDTO dto) {

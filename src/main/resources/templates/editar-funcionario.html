@@ -15,17 +15,18 @@
             <div class="content edit-page">
                 <section class="panel">
                     <header><p>PUT · ATUALIZAÇÃO COMPLETA</p><h2>Editar funcionário</h2><p>Atualize todos os dados do cadastro #<span th:text="${funcionarioDTO.id}">0</span>.</p></header>
-                    <form method="post" th:action="@{/painel/funcionarios/{id}(id=${funcionarioDTO.id})}" th:object="${funcionarioDTO}">
+                    <p id="editFeedback" class="form-feedback" role="alert" hidden></p>
+                    <form id="completeEditForm" method="post" novalidate th:action="@{/painel/funcionarios/{id}(id=${funcionarioDTO.id})}" th:object="${funcionarioDTO}">
                         <input type="hidden" name="_method" value="PUT">
-                        <label>ID<input type="number" th:field="*{id}" readonly></label>
-                        <label>Nome *<input th:field="*{nome}" required></label>
-                        <label>E-mail *<input type="email" th:field="*{email}" required></label>
-                        <label>Telefone<input th:field="*{telefone}"></label>
-                        <label>Cargo *<input th:field="*{cargo}" required></label>
-                        <label>Departamento<input th:field="*{departamento}"></label>
-                        <label>Salário<input type="number" min="0" step="0.01" th:field="*{salario}"></label>
-                        <label>Cidade<input th:field="*{cidade}"></label>
-                        <label>Status<select th:field="*{status}"><option value="">Não informado</option><option th:each="item : ${statusDisponiveis}" th:value="${item}" th:text="${#strings.replace(item, '_', ' ')}"></option></select></label>
+                        <label>ID<input type="number" th:field="*{id}" readonly data-required-field></label>
+                        <label>Nome *<input th:field="*{nome}" data-required-field></label>
+                        <label>E-mail *<input type="email" th:field="*{email}" data-required-field></label>
+                        <label>Telefone *<input th:field="*{telefone}" data-required-field></label>
+                        <label>Cargo *<input th:field="*{cargo}" data-required-field></label>
+                        <label>Departamento *<input th:field="*{departamento}" data-required-field></label>
+                        <label>Salário *<input type="number" min="0" step="0.01" th:field="*{salario}" data-required-field></label>
+                        <label>Cidade *<input th:field="*{cidade}" data-required-field></label>
+                        <label>Status *<select th:field="*{status}" data-required-field><option value="">Selecione o status</option><option th:each="item : ${statusDisponiveis}" th:value="${item}" th:text="${#strings.replace(item, '_', ' ')}"></option></select></label>
                         <div class="form-actions"><a href="/painel/funcionarios">CANCELAR</a><button class="primary" type="submit">SALVAR COM PUT</button></div>
                     </form>
                 </section>

@@ -54,3 +54,15 @@ patchField?.addEventListener('change', () => {
         });
     });
 });
+
+const completeEditForm = document.querySelector('#completeEditForm');
+completeEditForm?.addEventListener('submit', event => {
+    const feedback = document.querySelector('#editFeedback');
+    const emptyField = [...completeEditForm.querySelectorAll('[data-required-field]')]
+        .find(field => !field.value.trim());
+    if (!emptyField) return;
+    event.preventDefault();
+    feedback.textContent = 'Preencha todos os campos antes de salvar a edição.';
+    feedback.hidden = false;
+    emptyField.focus();
+});
