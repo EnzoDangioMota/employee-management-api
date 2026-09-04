@@ -1,4 +1,4 @@
-# PicPay Hiring Hub
+# Sistema de Gestão de Funcionários
 
 Sistema web para gerenciar candidatos no processo de contratação do PicPay. O projeto demonstra, em uma interface utilizável, os métodos HTTP `POST`, `GET`, `PUT`, `PATCH` e `DELETE`.
 
@@ -127,4 +127,4 @@ src/main/resources/
 
 ## Autoria
 
-Desenvolvido por Giovanna Quirino para o desafio de gerenciamento de candidatos com Spring Boot.
+Desenvolvido por Enzo Mota e Guilherme Montoni para o desafio de gerenciamento de candidatos com Spring Boot.
