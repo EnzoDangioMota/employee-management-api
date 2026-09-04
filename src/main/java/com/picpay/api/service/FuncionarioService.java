@@ -53,7 +53,7 @@ public class FuncionarioService {
                 dto.getStatus()
         );
 
-        return toDTO(funcionarioRepository.salvar(funcionario));
+        return toDTO(funcionarioRepository.atualizar(funcionario));
     }
 
 
@@ -96,7 +96,7 @@ public class FuncionarioService {
             funcionario.setStatus(dto.getStatus());
         }
 
-        return toDTO(funcionarioRepository.salvar(funcionario));
+        return toDTO(funcionarioRepository.atualizar(funcionario));
     }
 
 
@@ -127,7 +127,7 @@ public class FuncionarioService {
 
     private Funcionario toEntity(FuncionarioDTO dto) {
         return new Funcionario(
-                null,
+                dto.getId(),
                 dto.getNome(),
                 dto.getEmail(),
                 dto.getTelefone(),

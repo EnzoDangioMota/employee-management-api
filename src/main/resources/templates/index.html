@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PicPay Hiring Hub</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header class="topbar"><a href="/" class="brand">picpay <span>Hiring Hub</span></a><p>Gestão de candidatos</p></header>
+  <main class="container">
+    <section class="hero"><div><p class="eyebrow">RECURSOS HUMANOS</p><h1>Contratações com clareza.</h1><p>Cadastre, acompanhe e atualize cada etapa do processo seletivo.</p></div><button class="primary" id="newButton">+ Novo candidato</button></section>
+    <section class="metrics" aria-label="Indicadores"><article><span>Total</span><strong id="total">0</strong></article><article><span>Em análise</span><strong id="emAnalise">0</strong></article><article><span>Aprovados</span><strong id="aprovados">0</strong></article><article><span>Contratados</span><strong id="contratados">0</strong></article></section>
+    <section class="panel controls"><div class="search"><input id="search" placeholder="Pesquisar por nome, cargo ou status"><button id="searchId">Consultar ID</button><input id="idLookup" type="number" min="1" placeholder="ID"></div><select id="statusFilter"><option value="">Todos os status</option><option>EM_ANALISE</option><option>APROVADO</option><option>REPROVADO</option><option>CONTRATADO</option></select></section>
+    <p id="feedback" class="feedback" role="status"></p>
+    <section class="panel"><div class="section-head"><div><h2>Candidatos</h2><p id="resultCount">Carregando dados...</p></div></div><div class="table-wrap"><table><thead><tr><th>ID</th><th>Candidato</th><th>Cargo</th><th>Departamento</th><th>Cidade</th><th>Status</th><th>Ações</th></tr></thead><tbody id="employees"></tbody></table></div><p id="empty" class="empty" hidden>Nenhum candidato encontrado.</p></section>
+    <section class="forms">
+      <form id="employeeForm" class="panel form"><div class="section-head"><div><p class="eyebrow" id="formMode">POST · NOVO CADASTRO</p><h2 id="formTitle">Cadastrar candidato</h2></div><button type="button" class="link-button" id="cancelEdit" hidden>Cancelar edição</button></div><div class="form-grid"><label>ID *<input name="id" type="number" min="1" required></label><label>Nome *<input name="nome" required></label><label>E-mail *<input name="email" type="email" required></label><label>Telefone<input name="telefone"></label><label>Cargo *<input name="cargo" required></label><label>Departamento<input name="departamento"></label><label>Salário<input name="salario" type="number" min="0" step="0.01"></label><label>Cidade<input name="cidade"></label><label>Status<select name="status"><option value="">Não informado</option><option>EM_ANALISE</option><option>APROVADO</option><option>REPROVADO</option><option>CONTRATADO</option></select></label></div><button class="primary" type="submit" id="saveButton">Cadastrar (POST)</button></form>
+      <form id="patchForm" class="panel form patch"><div class="section-head"><div><p class="eyebrow">PATCH · ATUALIZAÇÃO PARCIAL</p><h2>Atualizar somente o necessário</h2><p>Preencha um ou mais campos; os demais dados serão mantidos.</p></div></div><div class="form-grid"><label>ID do candidato *<input name="id" type="number" min="1" required></label><label>Novo cargo<input name="cargo"></label><label>Novo salário<input name="salario" type="number" min="0" step="0.01"></label><label>Novo status<select name="status"><option value="">Não alterar</option><option>EM_ANALISE</option><option>APROVADO</option><option>REPROVADO</option><option>CONTRATADO</option></select></label></div><button class="secondary" type="submit">Atualizar parcialmente (PATCH)</button></form>
+    </section>
+  </main><script src="/js/app.js"></script>
+</body>
+</html>

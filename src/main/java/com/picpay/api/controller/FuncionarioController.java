@@ -3,6 +3,7 @@ package com.picpay.api.controller;
 import com.picpay.api.dto.FuncionarioDTO;
 import com.picpay.api.service.FuncionarioService;
 import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class FuncionarioController {
     private final FuncionarioService funcionarioService;
 
     @PostMapping
-    public FuncionarioDTO save(@RequestBody FuncionarioDTO funcionarioDTO) {
+    public FuncionarioDTO save(@Valid @RequestBody FuncionarioDTO funcionarioDTO) {
         return funcionarioService.save(funcionarioDTO);
     }
 
@@ -30,7 +31,7 @@ public class FuncionarioController {
     }
 
     @PutMapping("/{id}")
-    public FuncionarioDTO update(@PathVariable Long id, @RequestBody FuncionarioDTO funcionarioDTO) {
+    public FuncionarioDTO update(@PathVariable Long id, @Valid @RequestBody FuncionarioDTO funcionarioDTO) {
         return funcionarioService.update(id, funcionarioDTO);
     }
 
