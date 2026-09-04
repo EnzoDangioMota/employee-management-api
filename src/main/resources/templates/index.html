@@ -75,11 +75,11 @@
                                     <td th:text="${f.cargo}">Cargo</td>
                                     <td th:text="${f.departamento ?: '—'}">Departamento</td>
                                     <td th:text="${f.cidade ?: '—'}">Cidade</td>
-                                    <td><span class="badge"
+                                    <td><span class="badge" th:classappend="${f.status != null ? ' status-' + #strings.toLowerCase(f.status.name()) : ' status-uninformed'}"
                                             th:text="${#strings.replace(f.status, '_', ' ')}">STATUS</span></td>
                                     <td>
-                                        <form class="delete-form" method="post" action="/painel/visao-geral/funcionarios/remover"><input
-                                                type="hidden" name="id" th:value="${f.id}"><button type="submit"
+                                        <form class="delete-form" method="post" th:action="@{/painel/visao-geral/funcionarios/{id}(id=${f.id})}"><input
+                                                type="hidden" name="_method" value="DELETE"><button type="submit"
                                                 aria-label="Remover funcionário"
                                                 onclick="return confirm('Deseja remover este funcionário?')">×</button>
                                         </form>

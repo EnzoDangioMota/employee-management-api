@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,13 +53,22 @@ public class HomeController {
 
     @GetMapping("/painel/funcionarios")
     public String funcionarios(@RequestParam(defaultValue = "") String busca,
-            @RequestParam(required = false) StatusFuncionario status, Model model) {
-        List<Funcionario> filtrados = filter(repository.buscarTodos(), busca, status);
+            @RequestParam(required = false) StatusFuncionario status,
+            @RequestParam(required = false) Long id, Model model) {
+        List<Funcionario> origem = repository.buscarTodos();
+        if (id != null) {
+            origem = repository.buscarPorId(id).map(List::of).orElseGet(List::of);
+            if (origem.isEmpty()) {
+                model.addAttribute("erro", "Funcionário não encontrado para o ID informado.");
+            }
+        }
+        List<Funcionario> filtrados = filter(origem, busca, status);
         model.addAttribute("funcionarios", filtrados);
         model.addAttribute("totalEncontrado", filtrados.size());
         model.addAttribute("statusDisponiveis", StatusFuncionario.values());
         model.addAttribute("busca", busca);
         model.addAttribute("statusSelecionado", status);
+        model.addAttribute("idConsulta", id);
         return "funcionarios";
     }
 
@@ -101,14 +111,14 @@ public class HomeController {
         return "index";
     }
 
-    @PostMapping("/painel/funcionarios/remover")
-    public String remover(@RequestParam Long id) {
+    @DeleteMapping("/painel/funcionarios/{id}")
+    public String remover(@PathVariable Long id) {
         service.delete(id);
         return "redirect:/painel/funcionarios";
     }
 
-    @PostMapping("/painel/visao-geral/funcionarios/remover")
-    public String removerDaVisaoGeral(@RequestParam Long id) {
+    @DeleteMapping("/painel/visao-geral/funcionarios/{id}")
+    public String removerDaVisaoGeral(@PathVariable Long id) {
         service.delete(id);
         return "redirect:/";
     }
